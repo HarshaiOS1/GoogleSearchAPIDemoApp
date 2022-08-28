@@ -1,0 +1,6 @@
+framework module Pods_GoogleSearchAPIDemo {
+  umbrella header "Pods-GoogleSearchAPIDemo-umbrella.h"
+
+  export *
+  module * { export * }
+}

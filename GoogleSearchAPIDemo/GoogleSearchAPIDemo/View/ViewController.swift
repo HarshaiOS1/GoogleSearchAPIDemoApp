@@ -29,13 +29,14 @@ class ViewController: UIViewController {
 extension ViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         loader.startAnimating()
-        searchViewModel.searchForText(searchText: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
+//        searchViewModel.searchForText(searchText: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
+        searchViewModel.getGoogleResult(searchString: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
             if let weakSelf = self {
                 DispatchQueue.main.async {
                     weakSelf.loader.stopAnimating()
                 }
                 if didReceiveSearch {
-                    if (weakSelf.searchViewModel.searchResult?.items?.count ?? 0) > 0 {
+                    if (weakSelf.searchViewModel.searchResult?.items.count ?? 0) > 0 {
                         //Navigate to next screen
                         DispatchQueue.main.async {
                             let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
@@ -45,30 +46,24 @@ extension ViewController: UISearchBarDelegate {
                             }
                         }
                     } else {
-                        //show alert
-                        DispatchQueue.main.async {
-                            let alert = UIAlertController.init(title: "Error", message: "No Search Result Found", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                            weakSelf.present(alert, animated: true, completion: nil)
-                        }
+                        weakSelf.showAlert()
                     }
                 } else {
-                    //show alert
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController.init(title: "Error", message: "No Search Result Found", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                        weakSelf.present(alert, animated: true, completion: nil)
-                    }
+                    weakSelf.showAlert()
                 }
             } else {
-                //show alert
-                DispatchQueue.main.async {
-                    let alert = UIAlertController.init(title: "Error", message: "No Search Result Found", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                    self?.present(alert, animated: true, completion: nil)
-                }
+                self?.showAlert()
             }
         }
     }
+    
+    func showAlert() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController.init(title: "Error", message: "No Search Result Found", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
 }
 
