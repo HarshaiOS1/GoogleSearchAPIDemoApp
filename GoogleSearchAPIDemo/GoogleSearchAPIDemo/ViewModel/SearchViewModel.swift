@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 class SearchViewModel: NSObject {
     var operationQueue = OperationQueue()
@@ -19,10 +20,6 @@ class SearchViewModel: NSObject {
         if let googleSearchURl = URL(string: url) {
             var request = URLRequest.init(url: googleSearchURl, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 120)
             request.httpMethod = "GET"
-            
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("no-cache", forHTTPHeaderField: "cache-control")
-            
             URLSession.shared.dataTask(with: request) {(data, response, error) in
                 if error == nil {
                     if Constants.positiveStatusCodes.contains((response as? HTTPURLResponse)?.statusCode ?? 404) {

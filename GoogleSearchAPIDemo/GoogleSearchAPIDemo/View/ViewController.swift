@@ -29,8 +29,8 @@ class ViewController: UIViewController {
 extension ViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         loader.startAnimating()
-//        searchViewModel.searchForText(searchText: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
-        searchViewModel.getGoogleResult(searchString: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
+        searchViewModel.searchForText(searchText: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
+//        searchViewModel.getGoogleResult(searchString: searchBar.text ?? "") {[weak self] (didReceiveSearch, message) in
             if let weakSelf = self {
                 DispatchQueue.main.async {
                     weakSelf.loader.stopAnimating()
